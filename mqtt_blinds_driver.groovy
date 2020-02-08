@@ -32,6 +32,13 @@ metadata {
 				required: true,
 				defaultValue: "192.168.1.230"
 			)
+            input (
+				type: "Number",
+				name: "stepsToClose",
+				title: "Number of steps to fully closed",
+				required: true,
+				defaultValue: 8
+			)
         }
     }
 }
@@ -43,18 +50,20 @@ def parse(String description) {
     log.debug "parse(${decoded})"
     
     if (decoded.topic == topicName("position")) {
-        def iPosition = decoded.payload.toInteger()
-        def setPosition = device.currentValue("setPosition").toInteger()
+        def iPosition = decoded.payload.toDouble()
+        def setPosition = device.currentValue("setPosition").toDouble()
+        def hPosition = convertEsp8266PositionToHubitatPosition(iPosition)
         
-        sendEvent(name: "position", value: iPosition, isStateChange: true)
+        sendEvent(name: "position", value: hPosition, isStateChange: true)
         
         if (iPosition == setPosition) {
             //log.debug "Reached target position."
             
-            if (iPosition == 0) {
+            
+            if (hPosition == 0) {
                 sendEvent(name: "windowShade", value: "closed", isStateChange: true)
             }
-            else if (iPosition >= 99) {
+            else if (hPosition >= 99) {
                 sendEvent(name: "windowShade", value: "open", isStateChange: true)
             }
             else {
@@ -72,8 +81,26 @@ def close() {
     setPosition(0)
 }
 
+def convertHubitatPositionToEsp8266Position(hubitatPosition) {
+    def inverted = 100 - hubitatPosition
+    def scaled = inverted / 100 * stepsToClose
+    return scaled
+}
+
+def convertEsp8266PositionToHubitatPosition(espPosition) {
+    def scaled = espPosition / stepsToClose * 100
+    def inverted = 100 - scaled
+    return inverted
+}
+
 def setPosition(position) {
-    // position is a number from 0 to 100
+    // Position in Hubitat is a number from 0 to 100.  Open is 100.  Closed is 0.
+    // On the ESP8266, position is 0 at open, and something like 8 at closed.
+    // So we need a mapping function to translate.
+    // In software architecture terms, it would make more sense for this mapping to happen
+    // on the ESP8266, to keep the MQTT messages matching the Hubitat capability definition.
+    // However, changing parameters there requires recompiling and deploying firmware, so I
+    // have the mapping happening on the hub, where it's easy to change parameters.
     
     if (position > device.currentValue("position")) {
         sendEvent(name: "windowShade", value: "opening", isStateChange: true)
@@ -85,11 +112,13 @@ def setPosition(position) {
         return
     }
     
-    sendEvent(name: "setPosition", value: position, isStateChange: true)
-    interfaces.mqtt.publish(topicName("setPosition"), position.toString())
+    def espPosition = convertHubitatPositionToEsp8266Position(position)
+    
+    sendEvent(name: "setPosition", value: espPosition, isStateChange: true)
+    interfaces.mqtt.publish(topicName("setPosition"), espPosition.toString())
     
     // Simulate the MQTT device response for now.
-    runIn(2, isSetPosition)
+    //runIn(2, isSetPosition)
 }
 
 def isSetPosition() {
@@ -162,7 +191,7 @@ def mqttClientStatus(String status) {
 def connectToMqtt() {
     if (!interfaces.mqtt.isConnected()) {        
         log.info "Connecting to MQTT..."
-        interfaces.mqtt.connect("tcp://${mqttHubIp}:1883", device.getDeviceNetworkId(), null, null)
+        interfaces.mqtt.connect("tcp://${mqttHubIp}:1883", device.getDeviceNetworkId() + "driver", null, null)
         
         // Subscribe to the attributes
         interfaces.mqtt.subscribe(topicName("position"))
