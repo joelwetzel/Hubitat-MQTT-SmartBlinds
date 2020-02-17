@@ -24,6 +24,8 @@ Female barrel connector:  https://www.amazon.com/gp/product/B07RKMC4S1
 
 Flat ethernet cable:  https://www.amazon.com/gp/product/B017P34WZI
 
+Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH206-14NA/dp/B073XR4X72
+
 ----------
 
 ## Preparing the Motor Assembly
