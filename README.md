@@ -26,7 +26,9 @@ Flat ethernet cable:  https://www.amazon.com/gp/product/B017P34WZI
 
 ----------
 
-## Preparing the Motor Unit
+## Preparing the Motor Assembly
+
+# The motor assembly goes into the blinds header.  It has a 3d printed base, the stepper motor itself, and the driver board.
 
 1. Open the blue cover on the stepper motor and use a screwdriver to scratch out the middle trace.  Use a multimeter to make sure continuity is broken.
 2. Shorten the motor wires.  You can completely remove the middle one that went to the middle trace.  Shorten the others to TODO inches.
