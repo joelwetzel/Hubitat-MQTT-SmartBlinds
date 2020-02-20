@@ -63,7 +63,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 1. The cable is made from a section of Ethernet cable.  Prepare the end that will be in the breadbox first.  Here are the Dupont connectors you'll want on that end:
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/ConnectionsOnBreadboard2.jpeg)
 2. The connections are:
-  a. Double orange and Double red go to +12V and ground.
-  b. Green goes to the +5V.
-  c. Green-strip, blue, and blue-strip go to D5, D6, and D7.
+  - Double orange and Double red go to +12V and ground.
+  - Green goes to the +5V.
+  - Green-strip, blue, and blue-strip go to D5, D6, and D7.
 3. Thread the other end of the cable out of the hole in the box before preparing the other end.
