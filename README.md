@@ -47,6 +47,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 1. Solder pins into the buck converter.  Easiest way to do this is to stick it onto a breadboard, so that forces the pins to align well.
 2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 is spec'ed for 3.3V, but it'll work at 5.)  ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/BuckConverter5V.png)
 3. Assemble the breadboard.  The goals are:  Get 12V in.  Convert it down to 5V.  Get that 5V in to the NodeMCU.  Have the 12V available for the stepper driver.  Make it easy to connect the stepper driver.  Here's what it should look like:
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/AssembledBreadboard.jpeg)
 4. TODO
 5. Clip off any tabs that are sticking out of the breadboard.
 6. 3D Print the bottom of the box that the breadboard goes into.  It's TODO.stl.
