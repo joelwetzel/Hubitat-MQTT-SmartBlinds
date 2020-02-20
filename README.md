@@ -48,7 +48,9 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 is spec'ed for 3.3V, but it'll work at 5.)  ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/BuckConverter5V.png)
 3. Assemble the breadboard.  The goals are:  Get 12V in.  Convert it down to 5V.  Get that 5V in to the NodeMCU.  Have the 12V available for the stepper driver.  Make it easy to connect the stepper driver.  Here's what it should look like:
 4. TODO
-4. Clip off any tabs that are sticking out of the breadboard.
+5. Clip off any tabs that are sticking out of the breadboard.
+6. 3D Print the bottom of the box that the breadboard goes into.  It's TODO.stl.
+7. Use a sticky pad to attach the breadboard inside the box.  Make sure the micro USB port lines up with the opening for it, so you can reprogram the NodeMCU.
 
 ## Installing the Motor Assembly in the blinds
 1. Pull down your blinds.
@@ -56,3 +58,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 3. Remove the pull string assembly that turns the rod when you pull the strings.
 4. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess go out the opposite side, and used a dremel to cut through it.
 5. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.
+
+## Making the custom cable to connect the breadboard to the motor assembly
+1. The cable is made from a section of Ethernet cable.  Prepare the end that will be in the breadbox first.  Here are the Dupont connectors you'll want on that end:
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/ConnectionsOnBreadboard.jpeg)
