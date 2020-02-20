@@ -38,8 +38,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 4. Use a crimper tool to put a 4-terminal female Dupont connector on the blue, yellow, orange, and purple stepper wires, as shown in the picture.  Remember that you only need like 1mm of bare wire sticking out of each lead when using the crimper.  I found this video very helpful for learning how to use my Dupont crimper:  https://www.youtube.com/watch?v=-u1t7Cdf6RE&t=376s
 5. Print the 2" blinds base:  https://github.com/thehookup/Motorized_MQTT_Blinds/blob/master/BlindsBase.stl.  It can be 30% infill.  Test-fit the stepper in it.  It should fit snugly.  You won't need screws or glue to hold it in, when in place in the blinds.
 6. You'll need to print an adapter to connect the stepper shaft to the rod in the blinds.  The rods can have lots of different shapes.  Smart Home Hookup provided several options.  I designed my own, since my rod had a profile like the superman emblem.  I've uploaded that STL here.  Print it at 100% infill.  (By this point, you should have your blinds partially dismantled.  Smart Home Hookup has a good youtube video on doing that.)
-7. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess go out the opposite side, and used a dremel to cut through it.
-8. Assemble the unit.  The driver gets tucked into the cavity in the blinds base.
+
 
 ## Preparing the cable
 1. TODO
@@ -50,3 +49,10 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 3. Assemble the breadboard.  The goals are:  Get 12V in.  Convert it down to 5V.  Get that 5V in to the NodeMCU.  Have the 12V available for the stepper driver.  Make it easy to connect the stepper driver.  Here's what it should look like:
 4. TODO
 4. Clip off any tabs that are sticking out of the breadboard.
+
+## Installing the Motor Assembly in the blinds
+1. Pull down your blinds.
+2. Remove any end caps, if it has them.
+3. Remove the pull string assembly that turns the rod when you pull the strings.
+4. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess go out the opposite side, and used a dremel to cut through it.
+5. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.
