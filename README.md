@@ -83,7 +83,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 4. Clip off any tabs that are sticking out of the breadboard.
 
-5. 3D Print the bottom of the box that the breadboard goes into.  It's TODO.stl.
+5. 3D Print the bottom of the box that the breadboard goes into.  It's ControlUnitBottom.stl.
 
 6. Use a sticky pad to attach the breadboard inside the box.  Make sure the micro USB port lines up with the opening for it, so you can reprogram the NodeMCU.
 
@@ -98,4 +98,10 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 8. Attach the female power plug.  At this point, it should look something like this:
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/assembledControlUnit.jpg)
+
+9. 3D print the top of the box.  It's ControlUnitTop.stl.
+
+10. Assemble.  You should be able to attach a micro USB cable for programming at this point.
+
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/finishedControlUnit.jpg)
 
