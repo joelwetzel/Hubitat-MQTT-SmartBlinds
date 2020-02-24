@@ -68,20 +68,31 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 
 ## Preparing the Breadboard Unit
+
+#### The breadboard unit has a NodeMCU (ESP8266), a buck converter, a two-part 3d printed box, a power cable in, and an ethernet cable out.
+
 1. Solder pins into the buck converter.  Easiest way to do this is to stick it onto a breadboard, so that forces the pins to align well.
-2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 is spec'ed for 3.3V, but it'll work at 5.)  ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/BuckConverter5V.png)
+
+2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 is spec'ed for 3.3V, but it'll work at 5.)
+
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/BuckConverter5V.png)
+
 3. Assemble the breadboard.  The goals are:  Get 12V in.  Convert it down to 5V.  Get that 5V in to the NodeMCU.  Have the 12V available for the stepper driver.  Make it easy to connect the stepper driver.  Here's what it should look like:
+
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/AssembledBreadboard.jpg)
+
 4. Clip off any tabs that are sticking out of the breadboard.
+
 5. 3D Print the bottom of the box that the breadboard goes into.  It's TODO.stl.
+
 6. Use a sticky pad to attach the breadboard inside the box.  Make sure the micro USB port lines up with the opening for it, so you can reprogram the NodeMCU.
 
+7. Prepare the ethernet cable to come out of the box.  You'll need to attach the Dupont connectors while it's already sticking through the hole in the box.  Here are the Dupont connectors you'll want. The connections are:
 
-
-## Making the custom cable to connect the breadboard to the motor assembly
-1. The cable is made from a section of Ethernet cable.  Prepare the end that will be in the breadbox first.  Here are the Dupont connectors you'll want on that end. The connections are:
   - Double orange and Double red go to +12V and ground.
   - Green goes to the +5V.
   - Green-strip, blue, and blue-strip go to D5, D6, and D7.
+
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/ConnectionsOnBreadboard2.jpeg)
-2. Thread the other end of the cable out of the hole in the box before preparing the other end.
+
+
