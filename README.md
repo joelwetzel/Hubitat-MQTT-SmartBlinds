@@ -97,5 +97,5 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 8. Attach the female power plug.  At this point, it should look something like this:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/assembledControlUnit.jpeg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/assembledControlUnit.jpg)
 
