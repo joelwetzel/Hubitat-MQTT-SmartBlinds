@@ -52,11 +52,11 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 9. Prepare the ethernet cable that will come out of the motor assembly.  It should be about 6 inches long.  Attach Dupont connectors as shown here:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorAssemblyEthernet.jpeg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorAssemblyEthernet.jpg)
 
 10. Attach the connectors from both the ethernet cable and the motor onto the driver board, as shown here:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/driverConnections.jpeg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/driverConnections.jpg)
 
 11. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess stick out the opposite side, and used a dremel to cut through it.
 
