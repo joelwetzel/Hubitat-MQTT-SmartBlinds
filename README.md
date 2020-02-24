@@ -37,22 +37,30 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 2. Open the blue cover on the stepper motor and use a screwdriver to scratch out the middle trace.  Use a multimeter to make sure continuity is broken.
 
 3. Shorten the motor wires.  You can completely remove the middle one that went to the middle trace.  Shorten the others to 2.5 inches.  Attach a 4-pin female Dupont connector as shown.  I found this video very helpful for learning how to use my Dupont crimper:  https://www.youtube.com/watch?v=-u1t7Cdf6RE&t=376s
+
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorConnector.jpeg)
 
 4. Prepare the stepper driver board.  You need to create a solder bridge between the reset pin and the sleep pin (the green jumper in this pic), and trim off any unused pins.
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/SolderBridgeOnDriver.png)
 
-5. You'll need to print an adapter to connect the stepper shaft to the rod in the blinds.  The rods can have lots of different shapes.  Smart Home Hookup provided several options.  I designed my own, since my rod had a profile like the superman emblem.  I've uploaded that STL here.  Print it at 100% infill.  (By this point, you should have your blinds partially dismantled.  Smart Home Hookup has a good youtube video on doing that.)
+5. Pull down your blinds.
+6. Remove any end caps, if it has them.
+7. Remove the pull string assembly that turns the rod when you pull the strings.
 
-6. Prepare the ethernet cable that will come out of the motor assembly.  It should be about 6 inches long.  Dupont connectors as shown here:
+8. You'll need to print an adapter to connect the stepper shaft to the rod in the blinds.  The rods can have lots of different shapes.  Smart Home Hookup provided several options.  I designed my own, since my rod had a profile like the superman emblem.  I've uploaded that STL here. (Adapter.stl)  Print it at 100% infill.  (By this point, you should have your blinds partially dismantled.  Smart Home Hookup has a good youtube video on doing that.)
+
+9. Prepare the ethernet cable that will come out of the motor assembly.  It should be about 6 inches long.  Attach Dupont connectors as shown here:
+
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorAssemblyEthernet.jpeg)
 
-7. Pull down your blinds.
-8. Remove any end caps, if it has them.
-9. Remove the pull string assembly that turns the rod when you pull the strings.
-10. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess go out the opposite side, and used a dremel to cut through it.
-11. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.  You'll need to find a route to get the ethernet cable out of the blinds.
+10. Attach the connectors from both the ethernet cable and the motor onto the driver board, as shown here:
+
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/driverConnections.jpeg)
+
+11. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess stick out the opposite side, and used a dremel to cut through it.
+
+12. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.  You'll need to find a route to get the ethernet cable out of the blinds.
 
 
 ## Preparing the Breadboard Unit
