@@ -30,7 +30,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 ## Preparing the Motor Assembly
 
-#### The motor assembly goes into the blinds header.  It has a 3d printed base, the stepper motor itself, an adapter to connect the motor to the rod, and the driver board.
+#### The motor assembly goes into the blinds header.  It has a 3d printed base, the stepper motor itself, a 3d printed adapter to connect the motor to the rod, the driver board, and an ethernet cable sticking out.
 
 1. Print the 2" blinds base:  https://github.com/thehookup/Motorized_MQTT_Blinds/blob/master/BlindsBase.stl.  It can be 30% infill.  Test-fit the stepper in it.  It should fit snugly.  You won't need screws or glue to hold it in, when in place in the blinds.
 
