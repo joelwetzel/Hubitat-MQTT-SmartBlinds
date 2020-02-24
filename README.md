@@ -60,7 +60,11 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 11. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess stick out the opposite side, and used a dremel to cut through it.
 
-12. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.  You'll need to find a route to get the ethernet cable out of the blinds.
+12. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.  You'll need to find a route to get the ethernet cable out of the blinds.  It'll look something like this:
+
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/finishedMotorAssembly.jpeg)
+
+13. Reinstall the blinds in the window.
 
 
 ## Preparing the Breadboard Unit
