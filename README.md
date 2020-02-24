@@ -39,7 +39,8 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 3. Shorten the motor wires.  You can completely remove the middle one that went to the middle trace.  Shorten the others to 2.5 inches.  Attach a 4-pin female Dupont connector as shown.  I found this video very helpful for learning how to use my Dupont crimper:  https://www.youtube.com/watch?v=-u1t7Cdf6RE&t=376s
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorConnector.jpeg)
 
-4. Prepare the stepper driver board.  You need to create a solder bridge between the reset pin and the sleep pin (the green jumper in this pic), and trim off any unused pins.  ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/SolderBridgeOnDriver.png)
+4. Prepare the stepper driver board.  You need to create a solder bridge between the reset pin and the sleep pin (the green jumper in this pic), and trim off any unused pins.
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/SolderBridgeOnDriver.png)
 
 5. You'll need to print an adapter to connect the stepper shaft to the rod in the blinds.  The rods can have lots of different shapes.  Smart Home Hookup provided several options.  I designed my own, since my rod had a profile like the superman emblem.  I've uploaded that STL here.  Print it at 100% infill.  (By this point, you should have your blinds partially dismantled.  Smart Home Hookup has a good youtube video on doing that.)
 
