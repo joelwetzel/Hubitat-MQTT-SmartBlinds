@@ -67,9 +67,9 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 13. Reinstall the blinds in the window.
 
 
-## Preparing the Breadboard Unit
+## Preparing the Control Unit
 
-#### The breadboard unit has a NodeMCU (ESP8266), a buck converter, a two-part 3d printed box, a power cable in, and an ethernet cable out.
+#### The Control Unit has a NodeMCU (ESP8266), a buck converter, a two-part 3d printed box, a power cable in, and an ethernet cable out.
 
 1. Solder pins into the buck converter.  Easiest way to do this is to stick it onto a breadboard, so that forces the pins to align well.
 
@@ -87,7 +87,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 6. Use a sticky pad to attach the breadboard inside the box.  Make sure the micro USB port lines up with the opening for it, so you can reprogram the NodeMCU.
 
-7. Prepare the ethernet cable to come out of the box.  You'll need to attach the Dupont connectors while it's already sticking through the hole in the box.  Here are the Dupont connectors you'll want. The connections are:
+7. Prepare the ethernet cable to come out of the box, with MALE Dupont connectors.  You'll need to attach the Dupont connectors while it's already sticking through the hole in the box.  Here are the Dupont connectors you'll want. The connections are:
 
   - Double orange and Double red go to +12V and ground.
   - Green goes to the +5V.
@@ -95,4 +95,7 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/ConnectionsOnBreadboard2.jpeg)
 
+8. Attach the female power plug.  At this point, it should look something like this:
+
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/assembledControlUnit.jpeg)
 
