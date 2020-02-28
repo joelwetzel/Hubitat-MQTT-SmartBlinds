@@ -19,8 +19,11 @@ metadata {
 		capability "Actuator"
         capability "WindowShade"
         capability "Refresh"
+        capability "Initialize"
             
-        attribute "mqttClientStatus", "string"
+        attribute "driverStatus", "string"
+        attribute "deviceStatus", "string"
+            
         attribute "setPosition", "string"
     }
     preferences {
@@ -43,35 +46,49 @@ metadata {
     }
 }
 
+
 def parse(String description) {
     //log.debug "parse(${description})"
     
     def decoded = interfaces.mqtt.parseMessage(description)
     log.debug "parse(${decoded})"
     
-    if (decoded.topic == topicName("position")) {
-        def iPosition = decoded.payload.toDouble()
-        def setPosition = device.currentValue("setPosition").toDouble()
-        def hPosition = convertEsp8266PositionToHubitatPosition(iPosition)
+    if (decoded.topic == topicNameAttribute("position")) {
+        def deviceReportedPosition = decoded.payload.toInteger()
+        def targetPosition = device.currentValue("setPosition").toDouble().toInteger()
+        def deviceReportedPositionConvertedToHubitatValue = convertEsp8266PositionToHubitatPosition(deviceReportedPosition)
         
-        sendEvent(name: "position", value: hPosition, isStateChange: true)
+        sendEvent(name: "position", value: deviceReportedPositionConvertedToHubitatValue, isStateChange: true)
         
-        if (iPosition == setPosition) {
-            //log.debug "Reached target position."
-            
-            
-            if (hPosition == 0) {
-                sendEvent(name: "windowShade", value: "closed", isStateChange: true)
-            }
-            else if (hPosition >= 99) {
-                sendEvent(name: "windowShade", value: "open", isStateChange: true)
-            }
-            else {
-                sendEvent(name: "windowShade", value: "partially open", isStateChange: true)
-            }
-        }
-    }    
+        //log.debug "${deviceReportedPosition} ${targetPosition}"
+        
+        updateWindowShadeAttribute(deviceReportedPosition, targetPosition, deviceReportedPositionConvertedToHubitatValue)
+    }
+    else if (decoded.topic == "hubitat/${device.getDeviceNetworkId()}/status/device") {
+        sendEvent(name: "deviceStatus", value: decoded.payload, isStateChange: true)
+    }
 }
+
+
+def updateWindowShadeAttribute(deviceReportedPosition, targetPosition, knownPositionInHubitatScale) {
+    if (knownPositionInHubitatScale == 0) {
+        sendEvent(name: "windowShade", value: "closed", isStateChange: true)
+    }
+    else if (knownPositionInHubitatScale >= 99) {
+        sendEvent(name: "windowShade", value: "open", isStateChange: true)
+    }
+    else if (deviceReportedPosition == targetPosition) {
+        //log.debug "Reached target position."
+
+        if (knownPositionInHubitatScale == null) {
+            sendEvent(name: "windowShade", value: "unknown", isStateChange: true)
+        }
+        else {
+            sendEvent(name: "windowShade", value: "partially open", isStateChange: true)
+        }
+    }
+}
+
 
 def open() {
     setPosition(100)
@@ -80,6 +97,7 @@ def open() {
 def close() {
     setPosition(0)
 }
+
 
 def convertHubitatPositionToEsp8266Position(hubitatPosition) {
     def inverted = 100 - hubitatPosition
@@ -90,14 +108,17 @@ def convertHubitatPositionToEsp8266Position(hubitatPosition) {
 def convertEsp8266PositionToHubitatPosition(espPosition) {
     def scaled = espPosition / stepsToClose * 100
     def inverted = 100 - scaled
-    return inverted
+    return inverted.toInteger()
 }
 
+
 def setPosition(position) {
+    log.debug "setPosition(${position})"
+    
     // Position in Hubitat is a number from 0 to 100.  Open is 100.  Closed is 0.
     // On the ESP8266, position is 0 at open, and something like 8 at closed.
     // So we need a mapping function to translate.
-    // In software architecture terms, it would make more sense for this mapping to happen
+    // In pure interface terms, it would be cleaner for this mapping to happen
     // on the ESP8266, to keep the MQTT messages matching the Hubitat capability definition.
     // However, changing parameters there requires recompiling and deploying firmware, so I
     // have the mapping happening on the hub, where it's easy to change parameters.
@@ -115,24 +136,17 @@ def setPosition(position) {
     def espPosition = convertHubitatPositionToEsp8266Position(position)
     
     sendEvent(name: "setPosition", value: espPosition, isStateChange: true)
-    interfaces.mqtt.publish(topicName("setPosition"), espPosition.toString())
-    
-    // Simulate the MQTT device response for now.
-    //runIn(2, isSetPosition)
+    interfaces.mqtt.publish(topicNameCommand("setPosition"), espPosition.toString())
 }
-
-def isSetPosition() {
-    interfaces.mqtt.publish(topicName("position"), device.currentValue("setPosition"))
-}
-
-
 
 
 def installed() {
     log.info "installed()"
     
     initialize()
+    runEvery1Hour(initialize)
 }
+
 
 def updated() {
     log.info "updated()"
@@ -140,11 +154,13 @@ def updated() {
     initialize()
 }
 
+
 def refresh() {
     log.info "refresh()"
     
     initialize()
 }
+
 
 def initialize() {
     log.info "initialize()"
@@ -154,18 +170,23 @@ def initialize() {
         interfaces.mqtt.disconnect()
     }
         
+    //updateWindowShadeAttribute(device.currentValue("position"))
+    
     runIn(1, connectToMqtt)
 }
+
 
 def uninstalled() {
     interfaces.mqtt.disconnect()
 }
+
 
 def mqttClientStatus(String status) {
     log.debug "mqttClientStatus(${status})"
 
     if (status.take(6) == "Error:") {
         log.debug "Connection error..."
+        sendEvent(name: "driverStatus", value: "ERROR", isStateChange: true)
         
         try {
             interfaces.mqtt.disconnect()  // clears buffers
@@ -178,37 +199,57 @@ def mqttClientStatus(String status) {
     }
     else {
         log.debug "Connected!"
-    
-        runIn(1, open)
+        sendEvent(name: "driverStatus", value: "Connected", isStateChange: true)
     }
-    
-    if (status != null)
-    {
-        sendEvent(name: "mqttClientStatus", value: status, isStateChange: true)
-    }    
 }
 
+
 def connectToMqtt() {
+    log.info "connectToMqtt()"
+    
     if (!interfaces.mqtt.isConnected()) {        
         log.info "Connecting to MQTT..."
         interfaces.mqtt.connect("tcp://${mqttHubIp}:1883", device.getDeviceNetworkId() + "driver", null, null)
         
-        // Subscribe to the attributes
-        interfaces.mqtt.subscribe(topicName("position"))
-        
-        // Subscribe to the commands.  Commented out because I'm not letting commands come in through MQTT.
-        //interfaces.mqtt.subscribe(topicName("on"))
-        //interfaces.mqtt.subscribe(topicName("off"))
+        runIn(1, subscribe)
     }
 }
 
-def topicName(String attributeOrCommand) {
-    // We're using the "homie" mqtt convention.
+
+def subscribe() {
+    log.info "Subscribing..."
+    
+    // Track device status
+    interfaces.mqtt.subscribe("hubitat/${device.getDeviceNetworkId()}/status/device")
+    
+    // Subscribe to attributes
+    interfaces.mqtt.subscribe(topicNameAttribute("position"))
+        
+    // Subscribe to commands.  Commented out because I'm not letting commands come in through MQTT on this driver.
+    //interfaces.mqtt.subscribe(topicNameCommand("on"))
+    //interfaces.mqtt.subscribe(topicNameCommand("off"))
+}
+
+
+def topicNameCommand(String command) {
+    // We're "sort of" using the homie mqtt convention.
     // https://homieiot.github.io
         
     def topicBase = "hubitat/${device.getDeviceNetworkId()}"
     
-    def topicName = "${topicBase}/windowShade/${attributeOrCommand}"
+    def topicName = "${topicBase}/windowShade/commands/${command}"
+    
+    //log.debug topicName
+    return topicName
+}
+
+def topicNameAttribute(String attribute) {
+    // We're "sort of" using the homie mqtt convention.
+    // https://homieiot.github.io
+        
+    def topicBase = "hubitat/${device.getDeviceNetworkId()}"
+    
+    def topicName = "${topicBase}/windowShade/attributes/${attribute}"
     
     //log.debug topicName
     return topicName
