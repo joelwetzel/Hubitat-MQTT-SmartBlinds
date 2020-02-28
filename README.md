@@ -38,11 +38,11 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 3. Shorten the motor wires.  You can completely remove the middle one that went to the middle trace.  Shorten the others to 2.5 inches.  Attach a 4-pin female Dupont connector as shown.  I found this video very helpful for learning how to use my Dupont crimper:  https://www.youtube.com/watch?v=-u1t7Cdf6RE&t=376s
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorConnector.jpeg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/motorConnector.jpeg)
 
 4. Prepare the stepper driver board.  You need to create a solder bridge between the reset pin and the sleep pin (the green jumper in this pic), and trim off any unused pins.
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/SolderBridgeOnDriver.png)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/SolderBridgeOnDriver.png)
 
 5. Pull down your blinds.
 6. Remove any end caps, if it has them.
@@ -52,17 +52,17 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 9. Prepare the ethernet cable that will come out of the motor assembly.  It should be about 6 inches long.  Attach Dupont connectors as shown here:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/motorAssemblyEthernet.jpg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/motorAssemblyEthernet.jpg)
 
 10. Attach the connectors from both the ethernet cable and the motor onto the driver board, as shown here:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/driverConnections.jpg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/driverConnections.jpg)
 
 11. After putting the blinds base, the motor, and the adapter in, I had to shorten my rod.  I let the excess stick out the opposite side, and used a dremel to cut through it.
 
 12. Assemble the Motor Assembly inside the blinds.  The driver gets tucked into the cavity in the blinds base.  You'll need to find a route to get the ethernet cable out of the blinds.  It'll look something like this:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/finishedMotorAssembly.jpeg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/finishedMotorAssembly.jpeg)
 
 13. Reinstall the blinds in the window.
 
@@ -75,11 +75,11 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
 
 2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 is spec'ed for 3.3V, but it'll work at 5.)
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/BuckConverter5V.png)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/BuckConverter5V.png)
 
 3. Assemble the breadboard.  The goals are:  Get 12V in.  Convert it down to 5V.  Get that 5V in to the NodeMCU.  Have the 12V available for the stepper driver.  Make it easy to connect the stepper driver.  Here's what it should look like:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/AssembledBreadboard.jpg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/AssembledBreadboard.jpg)
 
 4. Clip off any tabs that are sticking out of the breadboard.
 
@@ -93,15 +93,15 @@ Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH20
   - Green goes to the +5V.
   - Green-strip, blue, and blue-strip go to D5, D6, and D7.
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/ConnectionsOnBreadboard2.jpeg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/ConnectionsOnBreadboard2.jpeg)
 
 8. Attach the female power plug.  At this point, it should look something like this:
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/assembledControlUnit.jpg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/assembledControlUnit.jpg)
 
 9. 3D print the top of the box.  It's ControlUnitTop.stl.
 
 10. Assemble.  You should be able to attach a micro USB cable for programming at this point.
 
-![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/finishedControlUnit.jpg)
+![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/finishedControlUnit.jpg)
 
