@@ -110,3 +110,11 @@ Connect the ethernet from the Motor Assembly to the ethernet from the Control Un
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/finalAssembly.jpg)
 
+## Installing the Firmware
+You'll need to install the firmware on the NodeMCU in the Control Unit.  That's why it has the Micro USB port.  I've provided the main.cpp file with the firmware.  I use Platform.io, though I haven't uploaded the entire project.  You can also just use the Arduino IDE.
+- You'll need to set your WIFI and MQTT info in main.cpp.
+- You need to set USER_DEVICE_NETWORK_ID for the id you're going to assign the device in Hubitat.
+
+## Installing the Hubitat Driver
+I've provided the driver that will control the Device in Hubitat.  You need to make sure your Device Network ID in Hubitat matches what you set in the firmware.
+
