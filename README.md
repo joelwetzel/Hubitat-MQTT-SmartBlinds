@@ -34,6 +34,8 @@ Ethernet coupler:  https://www.amazon.com/gp/product/B01CLFCX7E
 
 Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH206-14NA/dp/B073XR4X72
 
+Dupont Crimper toolset:  https://www.amazon.com/gp/product/B07GS1Z3M3
+
 ----------
 
 ## Preparing the Motor Assembly
