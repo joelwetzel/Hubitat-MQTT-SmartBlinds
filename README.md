@@ -24,7 +24,7 @@ NodeMCU: https://amzn.to/2I89xDF
 
 Buck Converter: https://amzn.to/2UsQ7jA
 
-12V Power Supply: https://www.amazon.com/gp/product/B01N3SNRE4
+12V Power Supply: https://www.amazon.com/gp/product/B07THWH1KZ
 
 Female barrel connector:  https://www.amazon.com/gp/product/B07RKMC4S1
 
