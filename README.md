@@ -9,7 +9,7 @@ The Hubitat driver is my own creation, using the MQTT support that Hubitat added
 
 What I've tried to do that is beyond what Smart Home Hookup did is two things:
 - Make it work well with Hubitat
-- "Productize" it.  Hide all the hardware details and make it clean and minimal and easy to maintain.
+- "Productize" it.  Hide all the hardware details and make it clean and minimal, repeatable to build, and easy to maintain.
 
 ----------
 
