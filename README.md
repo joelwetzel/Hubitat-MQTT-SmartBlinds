@@ -26,9 +26,9 @@ Buck Converter: https://amzn.to/2UsQ7jA
 
 12V Power Supply: https://www.amazon.com/gp/product/B07THWH1KZ
 
-Female barrel connector:  https://www.amazon.com/gp/product/B07RKMC4S1
+DC extension cables and barrel connector:  https://www.amazon.com/gp/product/B01EAHRZEC
 
-Flat ethernet cable:  https://www.amazon.com/gp/product/B017P34WZI
+Cheap ethernet cable to cut up:  https://www.amazon.com/gp/product/B074NBWQST
 
 Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH206-14NA/dp/B073XR4X72
 
