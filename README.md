@@ -1,5 +1,5 @@
 # Hubitat MQTT SmartBlinds
-Hubitat driver and NodeMCU (ESP8266) firmware for smart blinds.
+**Hardware, Firmware, and Hubitat Driver for MQTT Smart Blinds**
 
 This is a work in progress.  I don't expect anyone else will ever build one of these, but I wanted to document it, for my own ease of replicating it again.
 
