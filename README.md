@@ -5,7 +5,13 @@ This is a work in progress.  I don't expect anyone else will ever build one of t
 
 The hardware and firmware is heavily based on the work of Smart Home Hookup here:  https://github.com/thehookup/Motorized_MQTT_Blinds, and here:  http://www.thesmarthomehookup.com/automated-motorized-window-blinds-horizontal-blinds/  Much thanks to that dude!
 
-The Hubitat driver will be my own creation, using the MQTT support that Hubitat added last year.
+The Hubitat driver is my own creation, using the MQTT support that Hubitat added last year.
+
+What I've tried to do that is beyond what Smart Home Hookup did is two things:
+- Make it work well with Hubitat
+- "Productize" it.  Hide all the hardware details and make it clean and minimal and easy to maintain.
+
+One more thing:  The Hubitat Alexa skill does not yet support window shades and blinds.  To enable Alexa to work with my blinds, I created my own Alexa skill here:  https://github.com/joelwetzel/Alexa-Skill-For-Hubitat-Shades-And-Blinds
 
 ----------
 
