@@ -11,8 +11,6 @@ What I've tried to do that is beyond what Smart Home Hookup did is two things:
 - Make it work well with Hubitat
 - "Productize" it.  Hide all the hardware details and make it clean and minimal and easy to maintain.
 
-One more thing:  The Hubitat Alexa skill does not yet support window shades and blinds.  To enable Alexa to work with my blinds, I created my own Alexa skill here:  https://github.com/joelwetzel/Alexa-Skill-For-Hubitat-Shades-And-Blinds
-
 ----------
 
 ## Parts List
@@ -128,3 +126,8 @@ You'll need to install the firmware on the NodeMCU in the Control Unit.  That's 
 ## Installing the Hubitat Driver
 I've provided the driver that will control the Device in Hubitat.  You need to make sure your Device Network ID in Hubitat matches what you set in the firmware.
 
+## Controlling with Siri/HomeKit
+This driver works great with the Hubitat plugin for Homebridge.  Using that, you can control the blinds very well from within the Home app on your iPhone, or with Siri.
+
+## Controlling with Alexa
+The Hubitat Alexa skill does not yet support window shades and blinds.  To enable Alexa to work with my blinds, I created my own Alexa skill here:  https://github.com/joelwetzel/Alexa-Skill-For-Hubitat-Shades-And-Blinds
