@@ -30,6 +30,8 @@ DC extension cables and barrel connector:  https://www.amazon.com/gp/product/B01
 
 Cheap ethernet cable to cut up:  https://www.amazon.com/gp/product/B074NBWQST
 
+Ethernet coupler:  https://www.amazon.com/gp/product/B01CLFCX7E
+
 Velcro strips:  https://www.amazon.com/Command-Picture-Decorate-Damage-Free-PH206-14NA/dp/B073XR4X72
 
 ----------
