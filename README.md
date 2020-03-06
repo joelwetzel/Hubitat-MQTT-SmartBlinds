@@ -74,6 +74,7 @@ Dupont Crimper toolset:  https://www.amazon.com/gp/product/B07GS1Z3M3
 
 13. Reinstall the blinds in the window.
 
+----------
 
 ## Preparing the Control Unit
 
@@ -113,21 +114,36 @@ Dupont Crimper toolset:  https://www.amazon.com/gp/product/B07GS1Z3M3
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/finishedControlUnit.jpg)
 
+----------
+
 ## Final Assembly
 Connect the ethernet from the Motor Assembly to the ethernet from the Control Unit using the ethernet female-to-female coupler.  Tuck the control unit up behind the blinds and run power.  It should be almost invisible.  Just a small power cord visible.
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/finalAssembly.jpg)
+
+----------
+
+## Setting up an MQTT Broker
+I'll let others explain this.  There are lots of good tutorials out there.  I use Mosquitto.
+
+----------
 
 ## Installing the Firmware
 You'll need to install the firmware on the NodeMCU in the Control Unit.  That's why it has the Micro USB port.  I've provided the main.cpp file with the firmware.  I use Platform.io, though I haven't uploaded the entire project.  You can also just use the Arduino IDE.
 - You'll need to set your WIFI and MQTT info in main.cpp.
 - You need to set USER_DEVICE_NETWORK_ID for the id you're going to assign the device in Hubitat.
 
+----------
+
 ## Installing the Hubitat Driver
 I've provided the driver that will control the Device in Hubitat.  You need to make sure your Device Network ID in Hubitat matches what you set in the firmware.
 
+----------
+
 ## Controlling with Siri/HomeKit
 This driver/device works great with the Hubitat plugin for Homebridge.  Using that, you can control the blinds very well from within the Home app on your iPhone, or with Siri.
+
+----------
 
 ## Controlling with Alexa
 The Hubitat Alexa skill does not yet support window shades and blinds.  To enable Alexa to work with my blinds, I created my own Alexa skill here:  https://github.com/joelwetzel/Alexa-Skill-For-Hubitat-Shades-And-Blinds
