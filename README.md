@@ -117,7 +117,7 @@ Dupont Crimper toolset:  https://www.amazon.com/gp/product/B07GS1Z3M3
 ----------
 
 ## Final Assembly
-Connect the ethernet from the Motor Assembly to the ethernet from the Control Unit using the ethernet female-to-female coupler.  Tuck the control unit up behind the blinds and run power.  It should be almost invisible.  Just a small power cord visible.
+Connect the ethernet from the Motor Assembly to the ethernet from the Control Unit using the ethernet female-to-female coupler.  Tuck the control unit up behind the blinds and run power.  It should be almost invisible.  Just a small power cord visible in the lower left of the window opening.
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/finalAssembly.jpg)
 
