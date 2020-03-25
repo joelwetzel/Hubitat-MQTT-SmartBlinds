@@ -82,7 +82,7 @@ Dupont Crimper toolset:  https://www.amazon.com/gp/product/B07GS1Z3M3
 
 1. Solder pins into the buck converter.  Easiest way to do this is to stick it onto a breadboard, so that forces the pins to align well.
 
-2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 is spec'ed for 3.3V, but it'll work at 5.)
+2. At this point, you MUST calibrate the buck converter to output 5V.  If you don't, you'll burn up your NodeMCU.  (Yes, technically an ESP8266 chip itself is spec'ed for 3.3V, but this'll work at 5.  I believe it's because the NodeMCU has an extra voltage regulator.)
 
 ![alt text](https://github.com/joelwetzel/Hubitat-MQTT-SmartBlinds/blob/master/images/BuckConverter5V.png)
 
