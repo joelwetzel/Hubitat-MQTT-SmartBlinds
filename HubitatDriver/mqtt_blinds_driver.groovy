@@ -26,6 +26,7 @@ metadata {
             
         attribute "driverStatus", "string"
         attribute "deviceStatus", "string"
+        attribute "windowShade", "string"
             
         attribute "setPosition", "string"
     }
@@ -45,20 +46,6 @@ metadata {
 				required: true,
 				defaultValue: 8
 			)
-            input (
-                type: "bool",
-                name: "autoClose",
-                title: "Auto open/close blinds?",
-                required: true,
-                defaultValue: false
-            )
-            input (
-                type: "Number",
-                name: "illuminanceThreshold",
-                title: "Autoclose if brighter than",
-                required: false,
-                defaultValue: 500
-            )
    			input (
 				type: "bool",
 				name: "enableDebugLogging",
@@ -90,37 +77,21 @@ def parse(String description) {
             updateWindowShadeAttribute(deviceReportedPosition, targetPosition, deviceReportedPositionConvertedToHubitatValue)
         }
         else if (decoded.topic == "hubitat/${device.getDeviceNetworkId()}/illuminanceMeasurement/attributes/illuminance") {
-            def deviceReportedIlluminance = decoded.payload.toInteger()
+            state.deviceReportedIlluminance = decoded.payload.toInteger()
         
-            sendEvent(name: "illuminance", value: deviceReportedIlluminance, isStateChange: true)
-        
-            // Do a filter when illuminance drops
-            if (deviceReportedIlluminance > state.filteredIlluminance) {
-                state.filteredIlluminance = state.filteredIlluminance + 0.8 * (deviceReportedIlluminance - state.filteredIlluminance)
+            // Do a low-pass filter when illuminance drops
+            if (state.deviceReportedIlluminance > state.filteredIlluminance) {
+                state.filteredIlluminance = state.filteredIlluminance + 0.8 * (state.deviceReportedIlluminance - state.filteredIlluminance)
             }
             else {
-                state.filteredIlluminance = state.filteredIlluminance - (state.filteredIlluminance - deviceReportedIlluminance) / 3.0
+                state.filteredIlluminance = state.filteredIlluminance - (state.filteredIlluminance - state.deviceReportedIlluminance) / 3.0
             }
             state.filteredIlluminance = Math.round(state.filteredIlluminance * 100) / 100        // Only keep 2 decimal places
-        
-            if (autoClose && illuminanceThreshold &&
-                (new Date() - toDateTime(state.lastManualClose)).minutes > 30) {    // Manual open/close disables auto-close for a half hour.
-                if (state.filteredIlluminance > illuminanceThreshold 
-                        && device.currentValue("windowShade") != "closed"
-                        && (new Date() - toDateTime(state.lastAutoClose)).minutes > 3) {
-                    internalSetPosition(0)                    // Don't just call close().  I want to be able to distinguish between auto-close and user-initiated actions.
-                    state.lastAutoClose = new Date()
-                }
-                else if (state.filteredIlluminance <= illuminanceThreshold
-                            && device.currentValue("windowShade") == "closed"
-                            && (new Date() - toDateTime(state.lastAutoClose)).minutes > 6) {        // If we auto-close, don't reopen for at least 10 minutes
-                    internalSetPosition(100)                    // Don't just call open().  I want to be able to distinguish between auto-close and user-initiated actions.
-                    state.lastAutoClose = new Date()
-                }
-            }
+
+            sendEvent(name: "illuminance", value: state.filteredIlluminance, isStateChange: true)        // Report the filtered value
         }
         else if (decoded.topic == "hubitat/${device.getDeviceNetworkId()}/status/device") {
-            sendEvent(name: "deviceStatus", value: decoded.payload, isStateChange: true)
+            sendEvent(name: "deviceStatus", value: decoded.payload)
         }
     }
 }
@@ -128,43 +99,28 @@ def parse(String description) {
 
 def updateWindowShadeAttribute(deviceReportedPosition, targetPosition, knownPositionInHubitatScale) {
     if (knownPositionInHubitatScale == 0) {
-        sendEvent(name: "windowShade", value: "closed", isStateChange: true)
+        sendEvent(name: "windowShade", value: "closed")
     }
     else if (knownPositionInHubitatScale >= 99) {
-        sendEvent(name: "windowShade", value: "open", isStateChange: true)
+        sendEvent(name: "windowShade", value: "open")
     }
-    else if (deviceReportedPosition == targetPosition) {
-        //log.debug "Reached target position."
-
-        if (knownPositionInHubitatScale == null) {
-            sendEvent(name: "windowShade", value: "unknown", isStateChange: true)
-        }
-        else {
-            sendEvent(name: "windowShade", value: "partially open", isStateChange: true)
-        }
+    else {
+        sendEvent(name: "windowShade", value: "partially open")
     }
 }
 
 
 def open() {
-    sendEvent(name: "open", value: 1, isStateChange: true)
-    state.lastManualClose = new Date()
-    internalSetPosition(100)
+    log "open()"
+    
+    setPosition(100)
 }
 
 
 def close() {
-    sendEvent(name: "close", value: 1, isStateChange: true)
-    state.lastManualClose = new Date()
-    internalSetPosition(0)
-}
-
-
-def setPosition(position) {
-    def espPosition = convertHubitatPositionToEsp8266Position(position)
-    sendEvent(name: "setPosition", value: espPosition, isStateChange: true)
+    log "close()"
     
-    internalSetPosition(position)
+    setPosition(0)
 }
 
 
@@ -181,8 +137,8 @@ def convertEsp8266PositionToHubitatPosition(espPosition) {
 }
 
 
-def internalSetPosition(position) {
-    //log.debug "internalSetPosition(${position})"
+def setPosition(position) {
+    //log.debug "setPosition(${position})"
     
     // Position in Hubitat is a number from 0 to 100.  Open is 100.  Closed is 0.
     // On the ESP8266, position is 0 at open, and something like 8 at closed.
@@ -193,10 +149,10 @@ def internalSetPosition(position) {
     // have the mapping happening on the hub, where it's easy to change parameters.
     
     if (position > device.currentValue("position")) {
-        sendEvent(name: "windowShade", value: "opening", isStateChange: true)
+        sendEvent(name: "windowShade", value: "opening")
     }
     else if (position < device.currentValue("position")) {
-        sendEvent(name: "windowShade", value: "closing", isStateChange: true)
+        sendEvent(name: "windowShade", value: "closing")
     }
     else {
         return
@@ -243,14 +199,6 @@ def initialize() {
         state.filteredIlluminance = 0
     }
     
-    if (!state.lastAutoClose) {
-        state.lastAutoClose = new Date()
-    }
-    
-    if (!state.lastManualClose) {
-        state.lastManualClose = new Date()
-    }
-    
     runIn(1, connectToMqtt)
 }
 
@@ -265,7 +213,7 @@ def mqttClientStatus(String status) {
 
     if (status.take(6) == "Error:") {
         log.error "Connection error..."
-        sendEvent(name: "driverStatus", value: "ERROR", isStateChange: true)
+        sendEvent(name: "driverStatus", value: "ERROR")
         
         try {
             interfaces.mqtt.disconnect()  // clears buffers
@@ -278,7 +226,7 @@ def mqttClientStatus(String status) {
     }
     else {
         log.info "Connected!"
-        sendEvent(name: "driverStatus", value: "Connected", isStateChange: true)
+        sendEvent(name: "driverStatus", value: "Connected")
     }
 }
 
