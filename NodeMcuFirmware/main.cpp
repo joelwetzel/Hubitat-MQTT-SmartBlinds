@@ -24,15 +24,19 @@
 #define STEPPER_MICROSTEPPING     0                   // Defines microstepping 0 = no microstepping, 1 = 1/2 stepping, 2 = 1/4 stepping 
 #define DRIVER_INVERTED_SLEEP     1                   // Defines sleep while pin high.  If your motor will not rotate freely when on boot, comment this line out.
 
-#define STEPS_TO_CLOSE            8                  // Defines the number of steps needed to open or close fully
-#define CLOSE_DIRECTION           0                   // Switch between 1 and 0 to make the blinds close the opposite direction
+#define STEPS_TO_CLOSE            8                   // Defines the number of steps needed to open or close fully
+#define CLOSE_DIRECTION           0                   // Switch between 1 and 0 to make the blinds close the opposite direction (1 if motor is on right of blinds rod.  0 if motor is on left.)
 
 #define STEPPER_DIR_PIN           D6
 #define STEPPER_STEP_PIN          D7
 #define STEPPER_SLEEP_PIN         D5
 #define STEPPER_MICROSTEP_1_PIN   14
 #define STEPPER_MICROSTEP_2_PIN   12
- 
+
+#define LIGHT_SENSOR_PIN          A0
+#define LIGHT_RANGE_MIN           0
+#define LIGHT_RANGE_MAX           1000
+
 /*****************  END USER CONFIG SECTION *********************************/
 
 
@@ -46,8 +50,8 @@ bool boot = true;
 int currentPosition = 0;
 int newPosition = 0;
 char positionPublish[50];
+char lightIntensityPublish[50];
 bool moving = false;
-char charPayload[50];
 
 const char* ssid = WIFI_SSID ; 
 const char* password = WIFI_PASSWORD ;
@@ -76,6 +80,8 @@ void setup_wifi()
     Serial.print(".");
   }
 
+  delay(500);
+
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
@@ -83,17 +89,34 @@ void setup_wifi()
 }
 
 
-void reconnect() 
+void flashLed(int numFlashes, long d)
+{
+  for (int i = 0; i < numFlashes; i++)
+  {
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(d);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(d);
+  }
+}
+
+
+void reconnect()
 {
   int retries = 0;
+  int maxRetries = 150;
+
   while (!client.connected())
   {
-    if(retries < 150)
+    if(retries < maxRetries)
     {
       Serial.print("Attempting MQTT connection...");
       if (client.connect(mqtt_device_network_id))   // Password option:  client.connect(mqtt_device_network_id, mqtt_user, mqtt_pass)
       {
         Serial.println("connected");
+
+        flashLed(3, 500);
+
         if(boot == false)
         {
           client.publish("hubitat/"USER_DEVICE_NETWORK_ID"/status/device", "Reconnected"); 
@@ -109,6 +132,8 @@ void reconnect()
       } 
       else 
       {
+        flashLed(10, 100);
+
         Serial.print("failed, rc=");
         Serial.print(client.state());
         Serial.println(" try again in 5 seconds");
@@ -118,9 +143,9 @@ void reconnect()
       }
     }
 
-    if(retries > 149)
+    if(retries >= maxRetries)
     {
-      ESP.restart();
+      ESP.restart();    // TODO - this could be a problem.  If it restarts in closed position...  Maybe if we hit this, I should treat it like a setPosition(open), but set a flag to restart when we get there.
     }
   }
 }
@@ -130,25 +155,31 @@ void mqttCallback(char* topic, byte* payload, unsigned int length)
 {
   Serial.print("Message arrived [");
 
-  String newTopic = topic;
   Serial.print(topic);
   Serial.print("] ");
-  payload[length] = '\0';
-  String newPayload = String((char *)payload);
-  int intPayload = newPayload.toInt();
-  Serial.println(newPayload);
-  Serial.println();
-  newPayload.toCharArray(charPayload, newPayload.length() + 1);
-
-  if (newTopic == "hubitat/"USER_DEVICE_NETWORK_ID"/windowShade/commands/setPosition")
+  
+  if (strcmp(topic, "hubitat/"USER_DEVICE_NETWORK_ID"/windowShade/commands/setPosition") == 0)
   {
+    payload[length] = '\0';
+
+    int intPayload = atoi((char *) payload);
+
+    Serial.println(intPayload);
+    Serial.println();
+    
     newPosition = intPayload;
+
+    flashLed(4, 20);
   }
 }
 
 
 void processStepper()
 {
+  digitalWrite(16, LOW);
+  delay(10);
+  digitalWrite(16, HIGH);
+
   if (newPosition > currentPosition)
   {
     #if DRIVER_INVERTED_SLEEP == 1
@@ -197,14 +228,14 @@ void processStepper()
     #if DRIVER_INVERTED_SLEEP == 0
     shadeStepper.sleepON();
     #endif
-    String temp_str = String(currentPosition);
-    temp_str.toCharArray(positionPublish, temp_str.length() + 1);
+
+    itoa(currentPosition, positionPublish, 10);
     client.publish("hubitat/"USER_DEVICE_NETWORK_ID"/windowShade/attributes/position", positionPublish); 
     moving = false;
   }
   
-  Serial.println(currentPosition);
-  Serial.println(newPosition);
+  //Serial.println(currentPosition);
+  //Serial.println(newPosition);
 }
 
 
@@ -214,8 +245,37 @@ void checkIn()
 }
 
 
+void measureLightSensor()
+{
+  int sensorValue = analogRead(LIGHT_SENSOR_PIN);
+
+  //Serial.println(sensorValue); 
+
+  int scaledValue = map(sensorValue, 0, 1024, LIGHT_RANGE_MIN, LIGHT_RANGE_MAX); // + LIGHT_RANGE_MAX / 2);
+
+  //scaledValue = scaledValue - LIGHT_RANGE_MAX/2;
+
+//Serial.print("Scaled: ");
+//Serial.println(scaledValue);
+
+  if (scaledValue < 0)
+  { scaledValue = 0; }
+  if (scaledValue > LIGHT_RANGE_MAX)
+  { scaledValue = LIGHT_RANGE_MAX; }
+
+//Serial.print("Clamped: ");
+//Serial.println(scaledValue);
+
+  itoa(scaledValue, lightIntensityPublish, 10);
+  client.publish("hubitat/"USER_DEVICE_NETWORK_ID"/illuminanceMeasurement/attributes/illuminance", lightIntensityPublish); 
+}
+
+
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
+
+  pinMode(LED_BUILTIN, OUTPUT); 
+  pinMode(16, OUTPUT);
   
   shadeStepper.setMicrostepping(STEPPER_MICROSTEPPING);            // 0 -> Full Step                                
   shadeStepper.setSpeedRPM(STEPPER_SPEED);     // set speed in RPM, rotations per minute
@@ -239,6 +299,7 @@ void setup() {
   
   timer.setInterval(((1 << STEPPER_MICROSTEPPING)*5800)/STEPPER_SPEED/2, processStepper);   
   timer.setInterval(90000, checkIn);
+  timer.setInterval(60 * 1000, measureLightSensor);
 }
 
 
